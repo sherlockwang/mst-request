@@ -52,7 +52,7 @@ Some actions are necessary, some are not. For normal use case, only a few action
 
 `set(request, reject?)`
 
-Set the request and reject function for a mst-request. The request function will be used for later fetch action. 
+Set the request and reject function for a mst-request. The request function will be used for later fetch action.
 
 Every time called `set` action will reset the mst-request. See `reset()` action for more detail.
 
@@ -64,7 +64,7 @@ If `option()` is called to set `once = true`, the request function can only be s
 
 Call the request function set by `set()` action with the `params` passed in.
 
-It will also update the status, data, and error props according the request function result. If a reject handler is set in `set()` action, it will be used to handle error. 
+It will also update the status, data, and error props according the request function result. If a reject handler is set in `set()` action, it will be used to handle error.
 
 If a request call is succeed, the return value of the request function can be access via `data` prop. If an error occur, the data will be `[]`, and the error can be access via `error` prop.
 
