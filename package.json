@@ -1,6 +1,6 @@
 {
   "name": "mst-request-type",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./dist/mst-request-type.cjs",
   "module": "./dist/mst-request-type.mjs",
   "exports": {
