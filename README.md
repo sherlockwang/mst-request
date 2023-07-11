@@ -1,61 +1,93 @@
-# vite-vanilla-ts-lib-starter
+# MST Request
 
-The starter is built on top of Vite 4.x and prepared for writing libraries in TypeScript. It generates a hybrid package - both support for CommonJS and ESM modules.
+This a tiny lib handling async request in Mobx State Tree. The package can be treated as a custom model type. It doesn't handler the request, but accept a request function, and provide data, status, and some other handlers for Mobx State Tree. So users don't have to handle these status along with every request themselves.
 
-## Features
+The idea of this package is simple, handler the status change during a request for you, and gether all the status of a request in one place. So it is very simple, but should be able to save more effort than its size.
 
-- Hybrid support - CommonJS and ESM modules
-- IIFE bundle for direct browser support without bundler
-- Typings bundle
-- ESLint - scripts linter
-- Stylelint - styles linter
-- Prettier - formatter
-- Vitest - test framework
-- Husky + lint-staged - pre-commit git hook set up for formatting
+## Install
 
-## GitHub Template
-
-This is a template repo. Click the green [Use this template](https://github.com/kbysiec/vite-vanilla-ts-lib-starter/generate) button to get started.
-
-## Clone to local
-
-If you prefer to do it manually with the cleaner git history
-
-```bash
-git clone https://github.com/kbysiec/vite-vanilla-ts-lib-starter.git
-cd vite-vanilla-ts-lib-starter
-npm i
-```
-
-## Checklist
-
-When you use this template, update the following:
-
-- Remove `.git` directory and run `git init` to clean up the history
-- Change the name in `package.json` - it will be the name of the IIFE bundle global variable and bundle files name (`.cjs`, `.mjs`, `.iife.js`, `d.ts`)
-- Change the author name in `LICENSE`
-- Clean up the `README` and `CHANGELOG` files
-
-And, enjoy :)
+`npm i mst-request -S`
 
 ## Usage
 
-The starter contains the following scripts:
+Declare
 
-- `dev` - starts dev server
-- `build` - generates the following bundles: CommonJS (`.cjs`) ESM (`.mjs`) and IIFE (`.iife.js`). The name of bundle is automatically taken from `package.json` name property
-- `test` - starts vitest and runs all tests
-- `test:coverage` - starts vitest and run all tests with code coverage report
-- `lint:scripts` - lint `.ts` files with eslint
-- `lint:styles` - lint `.css` and `.scss` files with stylelint
-- `format:scripts` - format `.ts`, `.html` and `.json` files with prettier
-- `format:styles` - format `.cs` and `.scss` files with stylelint
-- `format` - format all with prettier and stylelint
-- `prepare` - script for setting up husky pre-commit hook
-- `uninstall-husky` - script for removing husky from repository
+`types.model('NAME').props({ ..., asyncData: Request, ... })`
 
-## Acknowledgment
+Use
 
-If you found it useful somehow, I would be grateful if you could leave a star in the project's GitHub repository.
+`<div>{asyncData.PROPS}</div>` or `asyncData.ACTIONS()`
 
-Thank you.
+## APIs
+
+The point of this lib is minium must features. So it only gives you a few key props.
+
+### props
+
+`status`
+
+Indicate request status, is one of these: 'init', 'pending', 'success', 'error', 'canceled'
+
+`data`
+
+Hold response data, the data is returned by the request function.
+
+Default is an empty array. The items in the data array is not observable.
+
+`error`
+
+Hold response error, the error is thrown by the request function.
+
+`token`
+
+An identifier, can be set by `option()`. By default is an empty string, only need to set if you want to identify the request.
+
+`loading`
+
+A computed value derived from `status`. Return `true` when status is "pending".
+
+### actions
+
+Some actions are necessary, some are not. For normal use case, only a few actions are needed.
+
+`set(request, reject?)`
+
+Set the request and reject function for a mst-request. The request function will be used for later fetch action. 
+
+Every time called `set` action will reset the mst-request. See `reset()` action for more detail.
+
+If `option()` is called to set `once = true`, the request function can only be set for one time. See `option()` action for more detail.
+
+**Must be called before fetch to set a request function.**
+
+`fetch(params)`
+
+Call the request function set by `set()` action with the `params` passed in.
+
+It will also update the status, data, and error props according the request function result. If a reject handler is set in `set()` action, it will be used to handle error. 
+
+If a request call is succeed, the return value of the request function can be access via `data` prop. If an error occur, the data will be `[]`, and the error can be access via `error` prop.
+
+**It is recommend to let the request function return data in an array for consistent.**
+
+`reset()`
+
+Clear `data` and `error` props, and make status to 'init'. Just like how the mst-request looks like after `set()` action is called.
+
+`refetch()`
+
+Cancel current `fetch()` and clear current `data`, and then recall the `fetch()` action.
+
+**It will use last time parameters, so if you want to change parameters, call `fetch()` instead.**
+
+`option()`
+
+Optional, can used to set a unique token and make request can be set one time only. Only needed when you want to change the default behavior of `set()`.
+
+`setCancel()`
+
+Optional, can set an abort controller for this request. The controller will be passed to request function as `{ controller: new AbortController() }`
+
+`cancel()`
+
+If an abort controller is set, the current pending request will be canceled by calling this action. The status will be change to `canceled` too. Otherwise, it will give a warning about missing abort controller.

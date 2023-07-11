@@ -42,6 +42,7 @@ const Request = types
       set(reqFunc: RequestFunc, rejFunc?: ErrorHandlerFunc) {
         if (oneTime && request) {
           console.warn('This Request model has already been set.')
+          return
         }
 
         this.reset()
@@ -54,6 +55,10 @@ const Request = types
         controller = cancel ?? new AbortController()
       },
       fetch: flow(function* (params?: RequestParams) {
+        if (typeof request !== 'function') {
+          throw new Error('Please set request function first')
+        }
+
         if (self.status === 'pending') return
 
         self.status = 'pending'
