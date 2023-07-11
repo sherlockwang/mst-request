@@ -44,8 +44,8 @@ const Request = types
           console.warn('This Request model has already been set.')
           return
         }
-
-        this.reset()
+        // @ts-ignore
+        self.reset()
         request = reqFunc
         errHandler = rejFunc ?? errHandler
       },
@@ -92,11 +92,13 @@ const Request = types
       },
       refetch: flow(function* () {
         if (controller) {
-          this.cancel()
+          // @ts-ignore
+          self.cancel()
         }
 
         self.data = []
-        yield this.fetch()
+        // @ts-ignore
+        yield self.fetch()
       }),
       reset() {
         self.status = 'init'

@@ -1,12 +1,12 @@
 {
   "name": "mst-request-type",
   "version": "1.0.5",
-  "main": "./dist/vite-ts-lib-starter.cjs",
-  "module": "./dist/vite-ts-lib-starter.mjs",
+  "main": "./dist/mst-request-type.cjs",
+  "module": "./dist/mst-request-type.mjs",
   "exports": {
     ".": {
-      "require": "./dist/vite-ts-lib-starter.cjs",
-      "import": "./dist/vite-ts-lib-starter.mjs"
+      "require": "./dist/mst-request-type.cjs",
+      "import": "./dist/mst-request-type.mjs"
     }
   },
   "scripts": {
