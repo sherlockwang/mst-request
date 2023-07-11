@@ -1,7 +1,7 @@
 {
   "name": "mst-request",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./dist/vite-ts-lib-starter.cjs",
   "module": "./dist/vite-ts-lib-starter.mjs",
   "exports": {
