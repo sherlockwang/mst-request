@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import mstRequest from '../src/index'
+import mstRequestType from '../src/index'
 
 describe('mst-request', () => {
   it('should init correctly', () => {
-    const testRequest = mstRequest.create()
+    const testRequest = mstRequestType.create()
 
     expect(testRequest.status).toEqual('init')
   })

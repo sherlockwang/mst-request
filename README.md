@@ -1,4 +1,4 @@
-# MST Request
+# MST Request Type
 
 This a tiny lib handling async request in Mobx State Tree. The package can be treated as a custom model type. It doesn't handler the request, but accept a request function, and provide data, status, and some other handlers for Mobx State Tree. So users don't have to handle these status along with every request themselves.
 
@@ -6,7 +6,7 @@ The idea of this package is simple, handler the status change during a request f
 
 ## Install
 
-`npm i mst-request -S`
+`npm i mst-request-type -S`
 
 ## Usage
 
