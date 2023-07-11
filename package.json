@@ -1,6 +1,6 @@
 {
   "name": "mst-request-type",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "./dist/vite-ts-lib-starter.cjs",
   "module": "./dist/vite-ts-lib-starter.mjs",
   "exports": {
@@ -28,8 +28,8 @@
     "url": "git+https://github.com/sherlockwang/mst-request.git"
   },
   "keywords": [
-    "Hello",
-    "Greeter"
+    "Mobx State Tree",
+    "Async Request"
   ],
   "author": "Jinghan Wang",
   "license": "MIT",
