@@ -1,12 +1,13 @@
 {
   "name": "mst-request-type",
   "version": "1.0.6",
+  "type": "module",
   "main": "./dist/mst-request-type.cjs",
-  "module": "./dist/mst-request-type.mjs",
+  "module": "./dist/mst-request-type.js",
   "exports": {
     ".": {
       "require": "./dist/mst-request-type.cjs",
-      "import": "./dist/mst-request-type.mjs"
+      "import": "./dist/mst-request-type.js"
     }
   },
   "scripts": {

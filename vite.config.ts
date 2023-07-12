@@ -7,6 +7,10 @@ const getPackageName = () => {
   return packageJson.name;
 };
 
+const getPeerDependency = () => {
+  return Object.keys(packageJson.peerDependencies)
+}
+
 const getPackageNameCamelCase = () => {
   try {
     return getPackageName().replace(/-./g, (char) => char[1].toUpperCase());
@@ -16,14 +20,14 @@ const getPackageNameCamelCase = () => {
 };
 
 const fileName = {
-  es: `${getPackageName()}.mjs`,
+  es: `${getPackageName()}.js`,
   cjs: `${getPackageName()}.cjs`,
   // iife: `${getPackageName()}.iife.js`,
 };
 
 const formats = Object.keys(fileName) as Array<keyof typeof fileName>;
 
-module.exports = defineConfig({
+export default defineConfig({
   base: "./",
   build: {
     lib: {
@@ -33,7 +37,7 @@ module.exports = defineConfig({
       fileName: (format) => fileName[format],
     },
     rollupOptions: {
-      external: ['mobx-state-tree'],
+      external: getPeerDependency(),
     },
   },
   test: {
