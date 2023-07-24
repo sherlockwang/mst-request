@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 import mstRequestType from '../src/index'
 
 describe('mst-request', () => {
@@ -6,5 +6,79 @@ describe('mst-request', () => {
     const testRequest = mstRequestType.create()
 
     expect(testRequest.status).toEqual('init')
+  })
+
+  it('should set a request function', () => {
+    const testRequest = mstRequestType.create()
+    const mockRequestFunc = vitest.fn()
+
+    testRequest.set(mockRequestFunc)
+
+    expect(testRequest.fetch).toBeDefined()
+  })
+
+  it('should fetch data successfully', async () => {
+    const testRequest = mstRequestType.create()
+    const mockData = [{ id: 1, name: 'Test' }]
+    const mockRequestFunc = vitest.fn().mockResolvedValue(mockData)
+
+    testRequest.set(mockRequestFunc)
+    await testRequest.fetch()
+
+    expect(testRequest.status).toEqual('success')
+    expect(testRequest.data).toEqual(mockData)
+  })
+
+  it('should handle request errors', async () => {
+    const testRequest = mstRequestType.create()
+    const mockError = new Error('Request failed')
+    const mockRequestFunc = vitest.fn().mockRejectedValue(mockError)
+    const mockErrorHandler = vitest.fn()
+
+    testRequest.set(mockRequestFunc, mockErrorHandler)
+    await testRequest.fetch()
+
+    expect(testRequest.status).toEqual('error')
+    expect(testRequest.error).toEqual(mockError)
+    expect(testRequest.data).toEqual([])
+    expect(mockErrorHandler).toHaveBeenCalledWith(mockError)
+  })
+
+  it('should cancel the request', async () => {
+    const testRequest = mstRequestType.create()
+    const mockRequestFunc = vitest
+      .fn()
+      .mockImplementation(() => new Promise(() => {}))
+
+    testRequest.set(mockRequestFunc)
+    testRequest.setCancel(new AbortController())
+    testRequest.fetch()
+    testRequest.cancel()
+
+    expect(testRequest.status).toEqual('canceled')
+  })
+
+  it('should refetch data', async () => {
+    const testRequest = mstRequestType.create()
+    const mockData = [{ id: 1, name: 'Test' }]
+    const mockRequestFunc = vitest.fn().mockResolvedValue(mockData)
+
+    testRequest.set(mockRequestFunc)
+    await testRequest.refetch()
+
+    expect(testRequest.status).toEqual('success')
+    expect(testRequest.data).toEqual(mockData)
+  })
+
+  it('should reset the model', () => {
+    const testRequest = mstRequestType.create({
+      status: 'success',
+      data: [{ id: 1, name: 'Test' }],
+    })
+
+    testRequest.reset()
+
+    expect(testRequest.status).toEqual('init')
+    expect(testRequest.data).toEqual([])
   })
 })

@@ -1,6 +1,6 @@
 {
   "name": "mst-request-type",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "main": "./dist/mst-request-type.cjs",
   "module": "./dist/mst-request-type.js",
@@ -12,14 +12,13 @@
   },
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+    "build": "vite build",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint . --ext .ts",
     "format": "prettier . --write",
     "prepare": "husky install && husky set .husky/pre-commit 'npx lint-staged' && git add .husky/pre-commit",
     "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky",
-    "prepublishOnly": "npm run lint && npm run format",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
@@ -56,6 +55,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "vite": "^4.0.4",
+    "vite-plugin-dts": "^3.3.1",
     "vitest": "^0.29.8"
   },
   "peerDependencies": {

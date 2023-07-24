@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import path from "path";
 import { defineConfig } from "vite";
+import dts from 'vite-plugin-dts'
 import packageJson from "./package.json";
 
 const getPackageName = () => {
@@ -40,6 +41,12 @@ export default defineConfig({
       external: getPeerDependency(),
     },
   },
+  plugins: [
+    dts({
+      entryRoot: 'src',
+      outDir: 'dist/types',
+    }),
+  ],
   test: {
 
   }
