@@ -48,7 +48,7 @@ describe('mst-request', () => {
     const testRequest = mstRequestType.create()
     const mockRequestFunc = vitest
       .fn()
-      .mockImplementation(() => new Promise(() => {}))
+      .mockImplementation(() => Promise.resolve())
 
     testRequest.set(mockRequestFunc)
     testRequest.setCancel(new AbortController())
